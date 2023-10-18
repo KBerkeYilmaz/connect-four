@@ -2,34 +2,38 @@ import Holes from "./components/UI/Holes";
 import Container from "./components/UI/Container";
 import { useState } from "react";
 
+const emptyBoard = () => {
+  const rows = 6;
+  const columns = 7;
+  const board = [];
+  for (let i = 0; i < rows; i++) {
+    const row = Array(columns).fill(null);
+    board.push(row);
+  }
+  console.log(board);
+  return board;
+};
+
 function App() {
+  const [board, setBoard] = useState(emptyBoard());
+  const [playerTurn, setPlayerTurn] = useState("Player 1");
 
-  const [playerTurn, setPlayerTurn] = useState("Player 1")
-
-
-  const renderHoles = () => {
-    const holes = [];
-    for (let i = 0; i < 42; i++) {
-      holes.push(
-        <Holes
-          key={i}
-          id={i}
-        />
-      );
-    }
-    return holes;
+  const renderBoard = () => {
+    // Iterate over each row in the board
+    return board.map((row, rowIndex) => {
+      // For each row, iterate over each cell
+      return row.map((cell, columnIndex) => {
+        // Render the Holes component (or a different component based on cell value)
+        return (
+          <Holes
+            key={`r${rowIndex}c${columnIndex}`}
+            id={`Cell r${rowIndex}c${columnIndex}`}
+            turn={playerTurn === "Player 1" ? 1 : 2}
+          />
+        );
+      });
+    });
   };
-
-  const board = () => {
-    const column1 = [0, 7, 14, 21, 28, 35];
-    const column2 = [1, 8, 15, 22, 29, 36];
-    const column3 = [2, 9, 16, 23, 30, 37];
-    const column4 = [3, 10, 17, 24, 31, 38];
-    const column5 = [4, 11, 18, 25, 32, 39];
-    const column6 = [5, 12, 19, 26, 33, 40];
-    const column7 = [6, 13, 20, 27, 34, 41];
-  };
-
   return (
     <div className="w-screen h-screen bg-violet-600 -z-10">
       <div className="z-10 absolute bottom-0 h-1/5 w-full bg-violet-800 rounded-t-[4rem] flex justify-center items-center">
@@ -51,7 +55,7 @@ function App() {
       pb-12
       gap-y-2"
       >
-        {renderHoles()}
+        {renderBoard()}
       </Container>
 
       <Container className="absolute w-40 h-48 top-1/3 left-32 flex flex-col justify-end items-end pb-2">
@@ -63,7 +67,6 @@ function App() {
         </p>
       </Container>
       <Container className="absolute w-40 h-48 top-1/3 right-32 flex flex-col justify-end items-end pb-2">
-        
         <h2 className="flex justify-center items-center w-full h-1/5 text-3xl font-extrabold">
           PLAYER 2
         </h2>
