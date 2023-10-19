@@ -1,25 +1,37 @@
 import { useState } from "react";
 
 const Holes = (props) => {
-  const [hasChips, setHasChips] = useState(false);
+  const { id, turn, hasChips, setHasChips, rowIndex, columnIndex } = props;
 
   const handleClick = (e) => {
-    let target = e.target;
+    const target = e.target;
+
     console.log(target.id);
-    setHasChips(!hasChips);
-    
+    if (!hasChips) {
+      // Only if the hole is empty
+      const newBoard = [...props.board];
+      newBoard[rowIndex][columnIndex] = turn === 1 ? "R" : "Y";
+      setHasChips(newBoard);
+      props.changeTurn();
+    }
   };
+
+  const chipColor =
+    hasChips === "Y"
+      ? "bg-yellow-500"
+      : hasChips === "R"
+      ? "bg-red-600"
+      : "bg-violet-600";
 
   return (
     <div
-      key={props.id}
-      id={props.id}
+      key={id}
+      id={id}
       onClick={handleClick}
       className="w-auto h-auto flex justify-center items-center"
     >
       <div
-        id={props.id}
-        className={`border-4 w-8/12 h-full border-black transition-all ease-in-out delay-50 ${hasChips ? "bg-red-600" : "bg-violet-600"} border-t-[10px]  rounded-[100%] cursor-pointer`}
+        className={`border-4 w-8/12 h-full border-black transition-all ease-in-out delay-50 ${chipColor} border-t-[15px] rounded-[100%] cursor-pointer`}
       ></div>
     </div>
   );
