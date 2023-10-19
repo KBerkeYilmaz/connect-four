@@ -16,7 +16,8 @@ const emptyBoard = () => {
 
 function App() {
   const [board, setBoard] = useState(emptyBoard());
-  const [playerTurn, setPlayerTurn] = useState("Player 1");
+  const [hasChips, setHasChips] = useState(false);
+  const [playerTurn, setPlayerTurn] = useState(1);
 
   const renderBoard = () => {
     // Iterate over each row in the board
@@ -28,16 +29,32 @@ function App() {
           <Holes
             key={`r${rowIndex}c${columnIndex}`}
             id={`Cell r${rowIndex}c${columnIndex}`}
-            turn={playerTurn === "Player 1" ? 1 : 2}
+            turn={playerTurn}
+            changeTurn={changeTurn}
+            board={board}
+            hasChips={board[rowIndex][columnIndex]}
+            setHasChips={setBoard}
+            rowIndex={rowIndex}
+            columnIndex={columnIndex}
           />
         );
       });
     });
   };
+
+  const changeTurn = () => {
+    if (playerTurn === 1) {
+      setPlayerTurn(2);
+    } else {
+      setPlayerTurn(1);
+    }
+  };
+
+  
   return (
     <div className="w-screen h-screen bg-violet-600 -z-10">
       <div className="z-10 absolute bottom-0 h-1/5 w-full bg-violet-800 rounded-t-[4rem] flex justify-center items-center">
-        <p className="text-white text-4xl">Turn: {playerTurn}</p>
+        <p className="text-white text-4xl">Turn: Player {playerTurn}</p>
       </div>
       <Container
         className="w-1/2 
