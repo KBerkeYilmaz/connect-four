@@ -4,16 +4,25 @@ const Holes = (props) => {
   const { id, turn, hasChips, setHasChips, rowIndex, columnIndex } = props;
 
   const handleClick = (e) => {
-    const target = e.target;
+   
+      const newBoard = [...props.board]; // Copy the board
 
-    console.log(target.id);
-    if (!hasChips) {
-      // Only if the hole is empty
-      const newBoard = [...props.board];
-      newBoard[rowIndex][columnIndex] = turn === 1 ? "R" : "Y";
-      setHasChips(newBoard);
-      props.changeTurn();
-    }
+      // Find the bottom-most empty row in the clicked column
+      let targetRow;
+      for (let i = newBoard.length - 1; i >= 0; i--) {
+        if (!newBoard[i][columnIndex]) {
+          targetRow = i;
+          break;
+        }
+      }
+
+      // If we found an empty row, add the chip
+      if (targetRow !== undefined) {
+        newBoard[targetRow][columnIndex] = turn === 1 ? "R" : "Y";
+        setHasChips(newBoard); // Set the new board state
+        props.changeTurn(); // Change the turn after making a move
+      }
+    
   };
 
   const chipColor =

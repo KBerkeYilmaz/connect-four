@@ -10,7 +10,6 @@ const emptyBoard = () => {
     const row = Array(columns).fill(null);
     board.push(row);
   }
-  console.log(board);
   return board;
 };
 
