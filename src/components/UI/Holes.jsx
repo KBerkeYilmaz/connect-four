@@ -40,7 +40,7 @@ const Holes = (props) => {
       className="w-auto h-auto flex justify-center items-center"
     >
       <div
-        className={`border-4 w-8/12 h-full border-black transition-all ease-in-out delay-50 ${chipColor} border-t-[15px] rounded-[100%] cursor-pointer`}
+        className={`border-4 w-9/12 h-full border-black transition-all ease-in-out delay-50 ${chipColor} border-t-[15px] rounded-[100%] cursor-pointer`}
       ></div>
     </div>
   );

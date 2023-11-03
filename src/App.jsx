@@ -1,6 +1,9 @@
 import Holes from "./components/UI/Holes";
+import Tile from "./components/UI/Tile";
 import Container from "./components/UI/Container";
 import { useState } from "react";
+import PlayerCard from "./components/UI/PlayerCard";
+import BottomBanner from "./components/UI/BottomBanner";
 
 const emptyBoard = () => {
   const rows = 6;
@@ -13,10 +16,59 @@ const emptyBoard = () => {
   return board;
 };
 
+const checkForWinner = (board) => {
+  const directions = [
+    { x: 0, y: 1 }, // vertical
+    { x: 1, y: 0 }, // horizontal
+    { x: 1, y: 1 }, // diagonal left-to-right
+    { x: 1, y: -1 }, // diagonal right-to-left
+  ];
+
+  for (let y = 0; y < board.length; y++) {
+    for (let x = 0; x < board[y].length; x++) {
+      for (let dir of directions) {
+        if (checkDirection(board, x, y, dir)) {
+          return board[y][x];
+        }
+      }
+    }
+  }
+  return null;
+};
+
+const checkDirection = (board, startX, startY, direction) => {
+  const targetPlayer = board[startY][startX];
+  if (!targetPlayer) return false;
+
+  for (let step = 1; step < 4; step++) {
+    const x = startX + direction.x * step;
+    const y = startY + direction.y * step;
+    if (
+      y < 0 ||
+      y >= board.length ||
+      x < 0 ||
+      x >= board[y].length ||
+      board[y][x] !== targetPlayer
+    ) {
+      return false;
+    }
+  }
+  return true;
+};
+
+// const winner = checkForWinner(board);
+// if (winner) {
+//   console.log("Player", winner, "wins!");
+// }
+
 function App() {
   const [board, setBoard] = useState(emptyBoard());
   const [hasChips, setHasChips] = useState(false);
   const [playerTurn, setPlayerTurn] = useState(1);
+  const [tileDropped, setTileDropped] = useState(false);
+  const [activeColumn, setActiveColumn] = useState(null);
+  const [winner, setWinner] = useState(null);
+  const [score, setScore] = useState(0);
 
   const renderBoard = () => {
     // Iterate over each row in the board
@@ -42,6 +94,13 @@ function App() {
   };
 
   const changeTurn = () => {
+    const winner = checkForWinner(board);
+    if (winner) {
+      setWinner(winner);
+      // Maybe stop the game, show an alert, or handle it some other way.
+      return; // Do not change the turn if there's a winner.
+    }
+
     if (playerTurn === 1) {
       setPlayerTurn(2);
     } else {
@@ -49,47 +108,41 @@ function App() {
     }
   };
 
-  
   return (
     <div className="w-screen h-screen bg-violet-600 -z-10">
-      <div className="z-10 absolute bottom-0 h-1/5 w-full bg-violet-800 rounded-t-[4rem] flex justify-center items-center">
-        <p className="text-white text-4xl">Turn: Player {playerTurn}</p>
-      </div>
       <Container
-        className="w-1/2 
-      h-4/6 
-      absolute 
-      top-1/2 
-      left-1/2 
-      transform 
-      -translate-x-1/2 
-      -translate-y-1/2
-      grid
-      grid-cols-7
-      pt-4 
-      px-2
-      pb-12
-      gap-y-2"
+        className=" w-2/5 
+                    h-4/6 
+                    absolute 
+                    top-1/2 
+                    left-1/2 
+                    transform 
+                    -translate-x-1/2 
+                    -translate-y-1/2
+                    grid
+                    grid-cols-7
+                    pt-4 
+                    px-2
+                    pb-12
+                    gap-y-2"
       >
         {renderBoard()}
       </Container>
 
-      <Container className="absolute w-40 h-48 top-1/3 left-32 flex flex-col justify-end items-end pb-2">
-        <h2 className="flex justify-center items-center w-full h-1/5 text-3xl font-extrabold">
-          PLAYER 1
-        </h2>
-        <p className="flex justify-center items-center w-full h-3/5 text-6xl font-bold">
-          0
-        </p>
-      </Container>
-      <Container className="absolute w-40 h-48 top-1/3 right-32 flex flex-col justify-end items-end pb-2">
-        <h2 className="flex justify-center items-center w-full h-1/5 text-3xl font-extrabold">
-          PLAYER 2
-        </h2>
-        <p className="flex justify-center items-center w-full h-3/5 text-6xl font-bold">
-          0
-        </p>
-      </Container>
+      <PlayerCard
+        key={0}
+        playerNo={1}
+        playerScore={0}
+        position="left"
+      />
+      <PlayerCard
+        key={1}
+        playerNo={2}
+        playerScore={0}
+        position="right"
+      />
+
+      <BottomBanner playerTurn={playerTurn} />
     </div>
   );
 }
