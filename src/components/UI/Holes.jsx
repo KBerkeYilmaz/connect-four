@@ -27,9 +27,9 @@ const Holes = (props) => {
 
   const chipColor =
     hasChips === "Y"
-      ? "bg-yellow-500"
+      ? "bg-yellow-500 border-t-8"
       : hasChips === "R"
-      ? "bg-red-600"
+      ? "bg-red-600 border-t-8"
       : "bg-violet-600";
 
   return (
@@ -40,7 +40,7 @@ const Holes = (props) => {
       className="w-auto h-auto flex justify-center items-center"
     >
       <div
-        className={`border-4 w-9/12 h-full border-black transition-all ease-in-out delay-50 ${chipColor} border-t-[15px] rounded-[100%] cursor-pointer`}
+        className={`border-4 w-9/12 h-full border-black transition-all ease-in-out delay-50 border-t-[15px] ${chipColor}  rounded-[100%] cursor-pointer`}
       ></div>
     </div>
   );

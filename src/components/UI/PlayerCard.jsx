@@ -27,6 +27,14 @@ const PlayerCard = (props) => {
           fill={playerColor}
           xmlns="http://www.w3.org/2000/svg"
         >
+
+<circle
+      cx="12"
+      cy="13.2" 
+      r="10.7" 
+      fill="#1C274C"
+    />
+  
           <circle
             cx="12"
             cy="12"
