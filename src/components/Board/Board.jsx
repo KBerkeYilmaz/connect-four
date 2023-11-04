@@ -1,8 +1,12 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
+
 import Holes from "../UI/Holes";
 import Container from "../UI/Container";
 import PlayerCard from "../UI/PlayerCard";
 import BottomBanner from "../UI/BottomBanner";
+import Button from "../UI/Button";
+import Table from "../UI/Table";
 
 const emptyBoard = () => {
   const rows = 6;
@@ -91,7 +95,7 @@ const Board = () => {
     const winner = checkForWinner(board);
     if (winner) {
       setWinner(winner);
-      // Maybe stop the game, show an alert, or handle it some other way.
+      // Stop the game, show an alert, or handle it some other way.
       return; // Do not change the turn if there's a winner.
     }
 
@@ -102,8 +106,20 @@ const Board = () => {
     }
   };
 
+  const handleClick = () => {
+    
+  }
   return (
     <>
+      <div className="w-2/5 h-40 flex items-center justify-around absolute top-0 right-0 left-0 m-auto gap-96">
+        <Button>
+            <Link to="/" >
+          <h1 className="text-white w-36 text-center p-6 text-xl">Menu</h1></Link>
+        </Button>
+        <Button> 
+        <h1 className="text-white w-36 text-center p-6 text-xl">Restart</h1>
+        </Button>
+      </div>
       <Container
         className=" 
         w-2/5 
@@ -143,3 +159,5 @@ const Board = () => {
 };
 
 export default Board;
+
+
