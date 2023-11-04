@@ -11,9 +11,9 @@ const PlayerCard = (props) => {
 
   let playerColor = "";
   if (props.playerNo === 1) {
-    playerColor = "#ef4444";
+    playerColor = "#fd6687";
   } else if (props.playerNo === 2) {
-    playerColor = "#eab308";
+    playerColor = "#ffce67";
   }
   return (
     <Container

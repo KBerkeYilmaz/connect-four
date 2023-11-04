@@ -9,7 +9,8 @@ export default {
       colors: {
         "player1": "#fd6687",
         "player2": "#ffce67",
-        "background-main": "#7945ff"
+        "background-main": "#7945ff",
+        "accent-color": "#5c2dd5"
       }
     },
   },

@@ -27,10 +27,10 @@ const Holes = (props) => {
 
   const chipColor =
     hasChips === "Y"
-      ? "bg-yellow-500 border-t-8"
+      ? "bg-player2 border-t-4"
       : hasChips === "R"
-      ? "bg-red-600 border-t-8"
-      : "bg-violet-600";
+      ? "bg-player1 border-t-4"
+      : "bg-background-main";
 
   return (
     <div
