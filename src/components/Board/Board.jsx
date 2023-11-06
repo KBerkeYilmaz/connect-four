@@ -7,6 +7,7 @@ import PlayerCard from "../UI/PlayerCard";
 import BottomBanner from "../UI/BottomBanner";
 import Button from "../UI/Button";
 import Table from "../UI/Table";
+import Modal from "../UI/Modal";
 
 const emptyBoard = () => {
   const rows = 6;
@@ -63,10 +64,8 @@ const Board = () => {
   const [board, setBoard] = useState(emptyBoard());
   const [hasChips, setHasChips] = useState(false);
   const [playerTurn, setPlayerTurn] = useState(1);
-  const [tileDropped, setTileDropped] = useState(false);
-  const [activeColumn, setActiveColumn] = useState(null);
   const [winner, setWinner] = useState(null);
-  const [score, setScore] = useState(0);
+  const [score, setScore] = useState({ player1: 0, player2: 0 });
 
   const renderBoard = () => {
     // Iterate over each row in the board
@@ -95,8 +94,12 @@ const Board = () => {
     const winner = checkForWinner(board);
     if (winner) {
       setWinner(winner);
-      // Stop the game, show an alert, or handle it some other way.
-      return; // Do not change the turn if there's a winner.
+      setScore((prevScores) => {
+        return winner === "R"
+          ? { ...prevScores, player1: prevScores.player1 + 1 }
+          : { ...prevScores, player2: prevScores.player2 + 1 };
+      });
+      return;
     }
 
     if (playerTurn === 1) {
@@ -107,35 +110,43 @@ const Board = () => {
   };
 
   const handleClick = () => {
-    
-  }
+    setBoard(emptyBoard);
+  };
+
+  const handleClose = (e) => {
+    setWinner(null);
+    setPlayerTurn(1);
+    setBoard(emptyBoard);
+    // Reset the game or perform other actions
+  };
   return (
     <>
-      <div className="w-2/5 h-40 flex items-center justify-around absolute top-0 right-0 left-0 m-auto gap-96">
-        <Button>
-            <Link to="/" >
-          <h1 className="text-white w-36 text-center p-6 text-xl">Menu</h1></Link>
+      <div className="w-2/5 h-40 flex items-center justify-around absolute top-0 right-0 left-0 m-auto sm:gap-64 xlg:gap-96">
+        <Button id="menu-button">
+          <Link to="/">
+            <h1 className="text-white w-36 text-center p-6 text-xl">Menu</h1>
+          </Link>
         </Button>
-        <Button> 
-        <h1 className="text-white w-36 text-center p-6 text-xl">Restart</h1>
+        <Button onClick={handleClick} id="restart-button">
+          <h1 className="text-white w-36 text-center p-6 text-xl">Restart</h1>
         </Button>
       </div>
       <Container
         className=" 
-        w-2/5 
-                      h-4/6 
-                      absolute 
-                      top-1/2 
-                      left-1/2 
-                      transform 
-                      -translate-x-1/2 
-                      -translate-y-1/2
-                      grid
-                      grid-cols-7
-                      pt-4 
-                      px-2
-                      pb-12
-                      gap-y-2"
+                    w-2/5 
+                    h-4/6 
+                    absolute 
+                    top-1/2 
+                    left-1/2 
+                    transform 
+                    -translate-x-1/2 
+                    -translate-y-1/2
+                    grid
+                    grid-cols-7
+                    pt-4 
+                    px-2
+                    pb-12
+                    gap-y-2"
       >
         {renderBoard()}
       </Container>
@@ -143,21 +154,25 @@ const Board = () => {
       <PlayerCard
         key={0}
         playerNo={1}
-        playerScore={0}
+        playerScore={score.player1}
         position="left"
       />
       <PlayerCard
         key={1}
         playerNo={2}
-        playerScore={0}
+        playerScore={score.player2}
         position="right"
       />
 
       <BottomBanner playerTurn={playerTurn} />
+      {winner && (
+        <Modal
+          winner={winner}
+          onClose={handleClose}
+        />
+      )}
     </>
   );
 };
 
 export default Board;
-
-
